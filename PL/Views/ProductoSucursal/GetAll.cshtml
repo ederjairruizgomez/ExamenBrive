@@ -1,0 +1,89 @@
+﻿@model ML.ProductoSucursal
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Sucursales</h5>
+        </div>
+    </div>
+    <br />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+    <div class="row">
+        @using (Html.BeginForm("GetAll", "ProductoSucursal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+                <div class="form-inline">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Sucursal)
+                        @Html.DropDownListFor(model => model.Sucursal.IdSucursal, new SelectList(Model.Sucursal.Sucursales, "IdSucursal", "Nombre"), "Selecciona una sucursal correspondiente", new { @class = "form-control"  })
+                        @Html.ValidationMessageFor(model => model.Sucursal.IdSucursal)
+                    </div>
+                    <div class="col-md-1">
+                        <input type="submit" value="Buscar" class="btn btn-info" />
+                    </div>
+                </div>
+        }
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+
+                        <td>Editar</td>
+                        <td class="hidden">IdProducto</td>
+                        <td>Nombre</td>
+                        <td>Precio Unitario</td>
+                        <td>Codigo de Barras</td>
+                        <td>Stock</td>
+                        <td>Imagen</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.ProductoSucursal productoSucursal in Model.ProductoSucursales)
+                    {
+                        <tr>
+                            <td><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "ProductoSucursal", new { IdProductoSucursal = productoSucursal.IdProductoSucursal })"></a></td>
+                            <td class="hidden">@productoSucursal.Producto.IdProducto</td>
+                            <td>@productoSucursal.Producto.Nombre</td>
+                            <td>@productoSucursal.Producto.PrecioUnitario</td>
+                            <td>@productoSucursal.Producto.CodigoDeBarras</td>
+                            <td>@productoSucursal.Stock</td>
+
+                            @if (productoSucursal.Producto.Imagen != null)
+                            {
+                                <td><img src="data:image/jpeg;base64,@Convert.ToBase64String(productoSucursal.Producto.Imagen)" style=" height:140px; width:140px;" /></td>
+                            }
+                            else
+                            {
+                                <td><img src="~/Content/Sin_Image.jpg" style=" height:140px; width:140px;" /></td>
+                            }
+                            <td><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "ProductoSucursal", new { IdProductoSucursal = productoSucursal.IdProductoSucursal })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');" ;></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    @Html.ActionLink("Regresar", "GetAll", "ProductoSucursal", htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+            
+       
+  
+    @Scripts.Render("~/bundles/jquery")
+
+</div>
+

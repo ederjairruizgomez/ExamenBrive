@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row">
+    <div class="col-md-2">
+    </div>
+        <div class="col-md-5">
+            <h2>Producto</h2>
+            <p>Ver Productos disponibles.</p>
+            <img src="~/Content/Productos.jpg" alt="Alternate Text" />
+            @using (Html.BeginForm("GetAll", "Producto", FormMethod.Get, new { enctype = "multipart/form-data" }))
+            {
+                <input type="submit" value="Seleccionar" class="btn btn-success" />
+            }
+        </div>
+        <div class="col-md-5">
+            <h2>Producto por Sucursal</h2>
+            <p>
+                Visualizar productos apartir de su Sucursal
+            </p>
+            <img src="~/Content/Sucursal.png" alt="Alternate Text" />
+            @using (Html.BeginForm("GetAll", "ProductoSucursal", FormMethod.Get, new { enctype = "multipart/form-data" }))
+            {
+                <input type="submit" value="Seleccionar" class="btn btn-success" />
+            }
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-5">
+        <h2>Realizar Compra</h2>
+        <p>Realizar Compra apartir de su Sucursal</p>
+        <img src="~/Content/Carrito.jpg" alt="Alternate Text" />
+        @using (Html.BeginForm("ProductoGetAll", "Venta", FormMethod.Get, new { enctype = "multipart/form-data" }))
+        {
+            <input type="submit" value="Seleccionar" class="btn btn-success" />
+        }
+    </div>
+    <div class="col-md-5">
+        <h2>Registro de Compras</h2>
+        <p>Revisar Compras apartir de su Sucursal</p>
+        <img src="~/Content/Registro.png" alt="Alternate Text" />
+        @using (Html.BeginForm("GetByIdSucursal", "Venta", FormMethod.Get, new { enctype = "multipart/form-data" }))
+        {
+            <input type="submit" value="Seleccionar" class="btn btn-success" />
+        }
+    </div>
+</div>

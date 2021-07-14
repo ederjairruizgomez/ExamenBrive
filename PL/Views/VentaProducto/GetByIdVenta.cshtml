@@ -1,0 +1,33 @@
+﻿@model ML.VentaProducto
+@{
+    ViewBag.Title = "GetByIdVenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;">Detalle de la Venta</h2>
+<div class="row">
+    <div class="col-md-8" style="left:180px; margin-top:20px;">
+        <table class="table table-bordered table-responsive" style="text-align:center;">
+            <thead>
+                <tr>
+                    <td class="hidden">IdProducto</td>
+                    <td><strong>NOMBRE</strong></td>
+                    <td><strong>CANTIDAD</strong></td>
+                    <td><strong>SUBTOTAL</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.VentaProducto ventaProducto in Model.VentaProductos)
+                {
+                    <tr>
+                        <td class="hidden">@ventaProducto.ProductoSucursal.Producto.IdProducto</td>
+                        <td class="col-md-3">@ventaProducto.ProductoSucursal.Producto.Nombre</td>
+                        <td class="col-md-3">@ventaProducto.Cantidad</td>
+                        <td class="col-md-3">@ventaProducto.Subtotal</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

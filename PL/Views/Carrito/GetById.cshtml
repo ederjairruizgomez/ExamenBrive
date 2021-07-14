@@ -1,0 +1,90 @@
+﻿@model ML.Result
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Venta Exitosa</h2>
+@if (Model.Objects == null)
+{
+    <div class="">
+        <div class="d-flex flex-row-reverse">
+            <div class="col-md-12 col-md-offset-10">
+                <a href="@Url.Action("GetAll", "Venta")" class="btn btn-success">
+                    <i class="fas fa-plus-circle"></i>
+                    Añadir Productos
+                </a>
+            </div>
+        </div>
+
+        <br>
+    </div>
+}
+else
+{
+    <div class="col-md-12">
+
+        <table class="table">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Nombre Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Producto producto in Model.Objects.ToList())
+                {
+                    <tr>
+                        <td style="height:15px; width:15px;">
+                            @if (@producto.Imagen == null)
+                            {
+                                <img style="height: 100%; width:100%;" src="~/Images/noimagavailable.jpg" class="img-responsive">
+                            }
+                            else
+                            {
+                                <label><img style="height: 100%; width:100%;" src="data:image/jpeg;base64,@Convert.ToBase64String(producto.Imagen)" class="img-responsive" /></label>
+                            }
+                        </td>
+                        <td>
+                            <label>@producto.Nombre</label>
+                        </td>
+                        <td>
+                            <label>@producto.PrecioUnitario</label>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => producto.VentaProducto.Cantidad, new { Class = "center", disabled = "disabled" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex flex-row-reverse">
+            <div class="col-md-offset-10">
+                @{
+                decimal total = 0;
+
+                foreach (ML.Producto producto in Model.Objects.ToList())
+                {
+                    if (producto.VentaProducto.Cantidad == 1)
+                    {
+                        total = total + producto.PrecioUnitario + producto.Venta.Total;
+
+                    }
+                    else
+                    {
+                        total = total + producto.Venta.Total;
+                    }
+                }
+                <label>Total de la Compra: @total </label>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+

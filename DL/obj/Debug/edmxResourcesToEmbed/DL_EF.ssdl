@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ERuizBriveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Productos">
+    <Key>
+      <PropertyRef Name="ProductoId" />
+    </Key>
+    <Property Name="ProductoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" />
+    <Property Name="CodigoDeBarras" Type="int" />
+    <Property Name="PrecioUnitario" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="ProductoSucursal">
+    <Key>
+      <PropertyRef Name="ProductoSucursalId" />
+    </Key>
+    <Property Name="ProductoSucursalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Cantidad" Type="int" />
+    <Property Name="ProductoId" Type="int" />
+    <Property Name="SucursalId" Type="int" />
+  </EntityType>
+  <EntityType Name="Sucursal">
+    <Key>
+      <PropertyRef Name="SucursalId" />
+    </Key>
+    <Property Name="SucursalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Venta">
+    <Key>
+      <PropertyRef Name="VentaId" />
+    </Key>
+    <Property Name="VentaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Total" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Fecha" Type="datetime" />
+  </EntityType>
+  <EntityType Name="VentaProducto">
+    <Key>
+      <PropertyRef Name="VentaProductoId" />
+    </Key>
+    <Property Name="VentaProductoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Cantidad" Type="int" />
+    <Property Name="ProductoId" Type="int" />
+    <Property Name="VentaId" Type="int" />
+  </EntityType>
+  <Association Name="FK__ProductoS__Produ__182C9B23">
+    <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
+    <End Role="ProductoSucursal" Type="Self.ProductoSucursal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Productos">
+        <PropertyRef Name="ProductoId" />
+      </Principal>
+      <Dependent Role="ProductoSucursal">
+        <PropertyRef Name="ProductoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductoS__Sucur__1920BF5C">
+    <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+    <End Role="ProductoSucursal" Type="Self.ProductoSucursal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sucursal">
+        <PropertyRef Name="SucursalId" />
+      </Principal>
+      <Dependent Role="ProductoSucursal">
+        <PropertyRef Name="SucursalId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VentaProd__Produ__1B0907CE">
+    <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
+    <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Productos">
+        <PropertyRef Name="ProductoId" />
+      </Principal>
+      <Dependent Role="VentaProducto">
+        <PropertyRef Name="ProductoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VentaProd__Venta__1A14E395">
+    <End Role="Venta" Type="Self.Venta" Multiplicity="0..1" />
+    <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venta">
+        <PropertyRef Name="VentaId" />
+      </Principal>
+      <Dependent Role="VentaProducto">
+        <PropertyRef Name="VentaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="ProductoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Nombre" Type="varchar" Mode="In" />
+    <Parameter Name="CodigoDeBarras" Type="int" Mode="In" />
+    <Parameter Name="PrecioUnitario" Type="decimal" Mode="In" />
+  </Function>
+  <Function Name="ProductoDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductoId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ProductoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="ProductoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductoId" Type="int" Mode="In" />
+    <Parameter Name="Nombre" Type="varchar" Mode="In" />
+    <Parameter Name="CodigoDeBarras" Type="int" Mode="In" />
+    <Parameter Name="PrecioUnitario" Type="decimal" Mode="In" />
+  </Function>
+  <EntityContainer Name="ERuizBriveModelStoreContainer">
+    <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductoSucursal" EntityType="Self.ProductoSucursal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sucursal" EntityType="Self.Sucursal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VentaProducto" EntityType="Self.VentaProducto" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ProductoS__Produ__182C9B23" Association="Self.FK__ProductoS__Produ__182C9B23">
+      <End Role="Productos" EntitySet="Productos" />
+      <End Role="ProductoSucursal" EntitySet="ProductoSucursal" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductoS__Sucur__1920BF5C" Association="Self.FK__ProductoS__Sucur__1920BF5C">
+      <End Role="Sucursal" EntitySet="Sucursal" />
+      <End Role="ProductoSucursal" EntitySet="ProductoSucursal" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VentaProd__Produ__1B0907CE" Association="Self.FK__VentaProd__Produ__1B0907CE">
+      <End Role="Productos" EntitySet="Productos" />
+      <End Role="VentaProducto" EntitySet="VentaProducto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VentaProd__Venta__1A14E395" Association="Self.FK__VentaProd__Venta__1A14E395">
+      <End Role="Venta" EntitySet="Venta" />
+      <End Role="VentaProducto" EntitySet="VentaProducto" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,54 @@
+﻿@model ML.ProductoSucursal
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Producto Sucursal</h5>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "ProductoSucursal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.IdProductoSucursal, new { @class = "hidden" })
+                            @Html.TextBoxFor(model => model.IdProductoSucursal, new { @class = "form-control hidden" })
+                            @Html.ValidationMessageFor(model => model.IdProductoSucursal)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Stock)
+                            @Html.TextBoxFor(model => model.Stock, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Stock)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+                            @Html.ActionLink("Regresar", "GetAll", "ProductoSucursal", htmlAttributes: new { @class = "btn btn-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+
+
+</div>
+
+
+

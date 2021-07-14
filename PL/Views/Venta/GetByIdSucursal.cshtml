@@ -1,0 +1,56 @@
+﻿@model ML.Venta
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sucursales</h2>
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("GetByIdSucursal", "Venta", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.VentaProducto.ProductoSucursal.Sucursal.IdSucursal, new SelectList(Model.VentaProducto.ProductoSucursal.Sucursal.Sucursales, "IdSucursal", "Nombre"), "Selecciona una sucursal", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.VentaProducto.ProductoSucursal.Sucursal.IdSucursal)
+                    </div>
+                    <div class="col-md-1" style="right:15px;">
+                        <input type="submit" value="Buscar" class="btn btn-info" />
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+        <div class="col-md-8" style="left:170px; margin-top:15px;">
+            <table class="table table-bordered table-responsive" style="text-align:center;">
+                <thead>
+                    <tr>
+                        <td><strong>SELECCIONAR</strong></td>
+                        <td class="hidden">IdVenta</td>
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>FECHA</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.Venta venta in Model.Ventas)
+                    {
+                        <tr>
+                            <td class="col-md-3"><a class="btn btn-warning glyphicon glyphicon-send" href="@Url.Action("GetByIdVenta", "VentaProducto", new { IdVenta = venta.IdVenta })"></a></td>
+                            <td class="hidden">@venta.IdVenta</td>
+                            <td class="col-md-3">@venta.Total</td>
+                            <td class="col-md-4">@venta.Fecha</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>    
+</div>
+
+
+
+
+

@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ERuizBriveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="IdProducto" />
+    </Key>
+    <Property Name="IdProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CodigoDeBarras" Type="Int32" />
+    <Property Name="PrecioUnitario" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Imagen" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="ProductoSucursals" Relationship="Self.FK__ProductoS__IdPro__1A14E395" FromRole="Producto" ToRole="ProductoSucursal" />
+  </EntityType>
+  <EntityType Name="ProductoSucursal">
+    <Key>
+      <PropertyRef Name="IdProductoSucursal" />
+    </Key>
+    <Property Name="IdProductoSucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Stock" Type="Int32" />
+    <Property Name="IdProducto" Type="Int32" />
+    <Property Name="IdSucursal" Type="Int32" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK__ProductoS__IdPro__1A14E395" FromRole="ProductoSucursal" ToRole="Producto" />
+    <NavigationProperty Name="Sucursal" Relationship="Self.FK__ProductoS__IdSuc__1B0907CE" FromRole="ProductoSucursal" ToRole="Sucursal" />
+    <NavigationProperty Name="VentaProductoes" Relationship="Self.FK__VentaProd__IdPro__1BFD2C07" FromRole="ProductoSucursal" ToRole="VentaProducto" />
+  </EntityType>
+  <EntityType Name="Sucursal">
+    <Key>
+      <PropertyRef Name="IdSucursal" />
+    </Key>
+    <Property Name="IdSucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ProductoSucursals" Relationship="Self.FK__ProductoS__IdSuc__1B0907CE" FromRole="Sucursal" ToRole="ProductoSucursal" />
+  </EntityType>
+  <EntityType Name="Venta">
+    <Key>
+      <PropertyRef Name="IdVenta" />
+    </Key>
+    <Property Name="IdVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Fecha" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="VentaProductoes" Relationship="Self.FK__VentaProd__IdVen__1CF15040" FromRole="Venta" ToRole="VentaProducto" />
+  </EntityType>
+  <EntityType Name="VentaProducto">
+    <Key>
+      <PropertyRef Name="IdVentaProducto" />
+    </Key>
+    <Property Name="IdVentaProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cantidad" Type="Int32" />
+    <Property Name="IdProductoSucursal" Type="Int32" />
+    <Property Name="IdVenta" Type="Int32" />
+    <NavigationProperty Name="ProductoSucursal" Relationship="Self.FK__VentaProd__IdPro__1BFD2C07" FromRole="VentaProducto" ToRole="ProductoSucursal" />
+    <NavigationProperty Name="Venta" Relationship="Self.FK__VentaProd__IdVen__1CF15040" FromRole="VentaProducto" ToRole="Venta" />
+  </EntityType>
+  <Association Name="FK__ProductoS__IdPro__1A14E395">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+    <End Role="ProductoSucursal" Type="Self.ProductoSucursal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="IdProducto" />
+      </Principal>
+      <Dependent Role="ProductoSucursal">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductoS__IdSuc__1B0907CE">
+    <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+    <End Role="ProductoSucursal" Type="Self.ProductoSucursal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sucursal">
+        <PropertyRef Name="IdSucursal" />
+      </Principal>
+      <Dependent Role="ProductoSucursal">
+        <PropertyRef Name="IdSucursal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VentaProd__IdPro__1BFD2C07">
+    <End Role="ProductoSucursal" Type="Self.ProductoSucursal" Multiplicity="0..1" />
+    <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductoSucursal">
+        <PropertyRef Name="IdProductoSucursal" />
+      </Principal>
+      <Dependent Role="VentaProducto">
+        <PropertyRef Name="IdProductoSucursal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VentaProd__IdVen__1CF15040">
+    <End Role="Venta" Type="Self.Venta" Multiplicity="0..1" />
+    <End Role="VentaProducto" Type="Self.VentaProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venta">
+        <PropertyRef Name="IdVenta" />
+      </Principal>
+      <Dependent Role="VentaProducto">
+        <PropertyRef Name="IdVenta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ERuizBriveEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Productoes" EntityType="Self.Producto" />
+    <EntitySet Name="ProductoSucursals" EntityType="Self.ProductoSucursal" />
+    <EntitySet Name="Sucursals" EntityType="Self.Sucursal" />
+    <EntitySet Name="Ventas" EntityType="Self.Venta" />
+    <EntitySet Name="VentaProductoes" EntityType="Self.VentaProducto" />
+    <AssociationSet Name="FK__ProductoS__IdPro__1A14E395" Association="Self.FK__ProductoS__IdPro__1A14E395">
+      <End Role="Producto" EntitySet="Productoes" />
+      <End Role="ProductoSucursal" EntitySet="ProductoSucursals" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductoS__IdSuc__1B0907CE" Association="Self.FK__ProductoS__IdSuc__1B0907CE">
+      <End Role="Sucursal" EntitySet="Sucursals" />
+      <End Role="ProductoSucursal" EntitySet="ProductoSucursals" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VentaProd__IdPro__1BFD2C07" Association="Self.FK__VentaProd__IdPro__1BFD2C07">
+      <End Role="ProductoSucursal" EntitySet="ProductoSucursals" />
+      <End Role="VentaProducto" EntitySet="VentaProductoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VentaProd__IdVen__1CF15040" Association="Self.FK__VentaProd__IdVen__1CF15040">
+      <End Role="Venta" EntitySet="Ventas" />
+      <End Role="VentaProducto" EntitySet="VentaProductoes" />
+    </AssociationSet>
+    <FunctionImport Name="ProductoAdd">
+      <Parameter Name="Nombre" Mode="In" Type="String" />
+      <Parameter Name="PrecioUnitario" Mode="In" Type="Decimal" />
+      <Parameter Name="CodigoDeBarras" Mode="In" Type="Int32" />
+      <Parameter Name="Imagen" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoDelete">
+      <Parameter Name="IdProducto" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoGetAll" ReturnType="Collection(ERuizBriveModel.ProductoGetAll_Result)" />
+    <FunctionImport Name="ProductoGetById" ReturnType="Collection(ERuizBriveModel.ProductoGetById_Result)">
+      <Parameter Name="IdProducto" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoUpdate">
+      <Parameter Name="IdProducto" Mode="In" Type="Int32" />
+      <Parameter Name="Nombre" Mode="In" Type="String" />
+      <Parameter Name="CodigoDeBarras" Mode="In" Type="Int32" />
+      <Parameter Name="PrecioUnitario" Mode="In" Type="Decimal" />
+      <Parameter Name="Imagen" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="GetIds" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="SucursalGetAll" ReturnType="Collection(ERuizBriveModel.SucursalGetAll_Result)" />
+    <FunctionImport Name="ProductoSucursalGetAll" ReturnType="Collection(ERuizBriveModel.ProductoSucursalGetAll_Result)" />
+    <FunctionImport Name="ProductoSucursalUpdateStock">
+      <Parameter Name="IdProductoSucursal" Mode="In" Type="Int32" />
+      <Parameter Name="Stock" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoSucursalDelete">
+      <Parameter Name="IdProductoSucursal" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoSucursalGetByIdSucursal" ReturnType="Collection(ERuizBriveModel.ProductoSucursalGetByIdSucursal_Result)">
+      <Parameter Name="IdSucursal" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoSucursalGetById" ReturnType="Collection(ERuizBriveModel.ProductoSucursalGetById_Result)">
+      <Parameter Name="IdProductoSucursal" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoSucursalAdd">
+      <Parameter Name="IdProducto" Mode="In" Type="Int32" />
+      <Parameter Name="IdSucursal" Mode="In" Type="Int32" />
+      <Parameter Name="Stock" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="VentaAdd">
+      <Parameter Name="IdVenta" Mode="InOut" Type="Int32" />
+      <Parameter Name="Total" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="VentaProductoAdd">
+      <Parameter Name="IdVenta" Mode="In" Type="Int32" />
+      <Parameter Name="Cantidad" Mode="In" Type="Int32" />
+      <Parameter Name="IdProductoSucursal" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProductoGetByCodigoDeBarras" ReturnType="Collection(ERuizBriveModel.ProductoGetByCodigoDeBarras_Result)">
+      <Parameter Name="CodigoDeBarras" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="VentaGetAll" ReturnType="Collection(ERuizBriveModel.VentaGetAll_Result)" />
+    <FunctionImport Name="GetByIdVenta" ReturnType="Collection(ERuizBriveModel.GetByIdVenta_Result)">
+      <Parameter Name="IdVenta" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="VentaProductoGetByIdSucursal" ReturnType="Collection(ERuizBriveModel.VentaProductoGetByIdSucursal_Result)">
+      <Parameter Name="IdSucursal" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="ProductoGetAll_Result">
+    <Property Type="Int32" Name="IdProducto" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="PrecioUnitario" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="CodigoDeBarras" Nullable="true" />
+    <Property Type="Binary" Name="Imagen" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="ProductoGetById_Result">
+    <Property Type="Int32" Name="IdProducto" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="CodigoDeBarras" Nullable="true" />
+    <Property Type="Decimal" Name="PrecioUnitario" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Binary" Name="Imagen" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SucursalGetAll_Result">
+    <Property Type="Int32" Name="IdSucursal" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="ProductoSucursalGetAll_Result">
+    <Property Type="Int32" Name="IdProductoSucursal" Nullable="false" />
+    <Property Type="Int32" Name="IdProducto" Nullable="true" />
+    <Property Type="Int32" Name="IdSucursal" Nullable="true" />
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="ProductoSucursalGetByIdSucursal_Result">
+    <Property Type="Int32" Name="IdProductoSucursal" Nullable="false" />
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+    <Property Type="Int32" Name="IdProducto" Nullable="false" />
+    <Property Type="String" Name="NombreProducto" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="CodigoDeBarras" Nullable="true" />
+    <Property Type="Decimal" Name="PrecioUnitario" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Binary" Name="Imagen" Nullable="true" />
+    <Property Type="Int32" Name="IdSucursal" Nullable="false" />
+    <Property Type="String" Name="NombreSucursal" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="ProductoSucursalGetById_Result">
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+    <Property Type="Int32" Name="IdProductoSucursal" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="ProductoGetByCodigoDeBarras_Result">
+    <Property Type="Int32" Name="IdProducto" Nullable="false" />
+    <Property Type="Int32" Name="CodigoDeBarras" Nullable="true" />
+    <Property Type="Decimal" Name="PrecioUnitario" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Binary" Name="Imagen" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="VentaGetAll_Result">
+    <Property Type="Decimal" Name="Total" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="IdVenta" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetByIdVenta_Result">
+    <Property Type="Int32" Name="IdVenta" Nullable="false" />
+    <Property Type="Decimal" Name="Total" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="IdVentaProducto" Nullable="false" />
+    <Property Type="Int32" Name="Cantidad" Nullable="true" />
+    <Property Type="Int32" Name="IdProductoSucursal" Nullable="false" />
+    <Property Type="Int32" Name="IdProducto" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="PrecioUnitario" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="CodigoDeBarras" Nullable="true" />
+    <Property Type="Binary" Name="Imagen" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="VentaProductoGetByIdSucursal_Result">
+    <Property Type="Int32" Name="IdVenta" Nullable="false" />
+    <Property Type="Decimal" Name="Total" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="IdSucursal" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+  </ComplexType>
+</Schema>
